@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080b16" />
+  <title>NEXTECH｜未來科技生活</title>
+  <style>
+    :root {
+      --bg: #080b16;
+      --panel: #111629;
+      --panel-2: #171d34;
+      --text: #f4f7ff;
+      --muted: #9aa5c5;
+      --blue: #69e3ff;
+      --purple: #a78bfa;
+      --line: rgba(255,255,255,.10);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 75% 0%, rgba(101, 75, 220, .20), transparent 38%),
+        radial-gradient(ellipse at 5% 30%, rgba(40, 194, 230, .10), transparent 30%),
+        var(--bg);
+      font-family: Inter, "Noto Sans TC", system-ui, -apple-system, sans-serif;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1160px, calc(100% - 40px)); margin: auto; }
+    .topline {
+      text-align: center; padding: 9px 14px; font-size: 12px; letter-spacing: .08em;
+      color: #d8eaff; background: linear-gradient(90deg, #263f83, #5b3b9d, #263f83);
+    }
+    header {
+      position: sticky; top: 0; z-index: 10; backdrop-filter: blur(18px);
+      background: rgba(8,11,22,.82); border-bottom: 1px solid var(--line);
+    }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: .12em; }
+    .brand-mark {
+      display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px;
+      color: #07101b; background: linear-gradient(135deg, var(--blue), var(--purple));
+      box-shadow: 0 0 24px rgba(105,227,255,.25); font-weight: 1000;
+    }
+    .brand small { display: block; color: var(--muted); font-size: 9px; letter-spacing: .2em; margin-top: 2px; }
+    .navlinks { display: flex; align-items: center; gap: 26px; color: #c4cce4; font-size: 13px; }
+    .navlinks a:hover { color: var(--blue); }
+    .nav-actions { display: flex; gap: 10px; align-items: center; }
+    .icon-btn, .menu-btn {
+      color: var(--text); background: var(--panel); border: 1px solid var(--line);
+      border-radius: 12px; padding: 10px 12px;
+    }
+    .cart-count { color: var(--blue); font-weight: 800; margin-left: 4px; }
+    .menu-btn { display: none; }
+    .hero { padding: 76px 0 64px; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 38px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px;
+      border: 1px solid rgba(105,227,255,.25); background: rgba(105,227,255,.07);
+      color: var(--blue); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 12px var(--blue); }
+    h1 { font-size: clamp(42px, 6vw, 76px); line-height: 1.08; letter-spacing: -.055em; margin: 22px 0 18px; }
+    .gradient-text { background: linear-gradient(100deg, #fff 5%, var(--blue) 48%, var(--purple)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero p { max-width: 520px; color: var(--muted); font-size: 16px; line-height: 1.9; }
+    .hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+      padding: 13px 18px; border-radius: 13px; border: 1px solid var(--line); font-weight: 750; font-size: 13px;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { color: #07101b; border: 0; background: linear-gradient(100deg, var(--blue), #a8c6ff); box-shadow: 0 10px 30px rgba(105,227,255,.15); }
+    .btn-secondary { background: rgba(255,255,255,.035); color: var(--text); }
+    .stats { display: flex; gap: 30px; margin-top: 38px; flex-wrap: wrap; }
+    .stat strong { display: block; font-size: 21px; }
+    .stat span { display: block; color: var(--muted); font-size: 11px; margin-top: 5px; }
+    .hero-art {
+      min-height: 420px; position: relative; display: grid; place-items: center;
+      border: 1px solid rgba(255,255,255,.08); border-radius: 32px; overflow: hidden;
+      background: radial-gradient(circle at 50% 42%, rgba(100,125,255,.24), transparent 40%), linear-gradient(145deg, #141b33, #0b1020 70%);
+    }
+    .orb { position: absolute; width: 290px; height: 290px; border-radius: 50%; border: 1px solid rgba(105,227,255,.25); box-shadow: 0 0 80px rgba(94,125,255,.18), inset 0 0 50px rgba(105,227,255,.08); }
+    .orb:before, .orb:after { content: ""; position: absolute; inset: 22px; border: 1px solid rgba(167,139,250,.25); border-radius: 50%; transform: rotateX(65deg) rotate(25deg); }
+    .orb:after { transform: rotateX(65deg) rotate(-35deg); }
+    .device {
+      position: relative; width: 180px; height: 300px; border-radius: 30px; padding: 8px;
+      transform: rotate(-9deg); background: linear-gradient(135deg, #d9e9ff, #303d62 25%, #11192d 55%, #8be9ff);
+      box-shadow: 20px 25px 60px rgba(0,0,0,.5), 0 0 55px rgba(105,227,255,.22);
+    }
+    .screen {
+      height: 100%; border-radius: 23px; overflow: hidden; position: relative;
+      background: radial-gradient(circle at 60% 25%, #c5b7ff 0, transparent 22%), radial-gradient(circle at 35% 60%, #4be1ee, transparent 32%), linear-gradient(145deg, #151a3b, #080d19 70%);
+      border: 1px solid rgba(255,255,255,.35);
+    }
+    .screen:before { content: ""; position: absolute; width: 115px; height: 220px; border-radius: 50%; border: 18px solid rgba(255,255,255,.12); transform: rotate(35deg); top: 35px; left: 28px; filter: blur(1px); }
+    .camera { position: absolute; z-index: 2; width: 55px; height: 13px; border-radius: 10px; background: #050914; top: 13px; left: 50%; transform: translateX(-50%); }
+    .float-tag { position: absolute; padding: 12px 15px; border: 1px solid var(--line); border-radius: 14px; background: rgba(17,22,41,.86); backdrop-filter: blur(12px); box-shadow: 0 15px 35px rgba(0,0,0,.2); font-size: 12px; }
+    .float-tag strong { display: block; font-size: 14px; margin-bottom: 4px; }
+    .float-tag span { color: var(--muted); font-size: 10px; }
+    .tag-one { left: 20px; top: 72px; }
+    .tag-two { right: 18px; bottom: 70px; }
+    .section { padding: 52px 0; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 18px; margin-bottom: 24px; }
+    .kicker { color: var(--blue); font-size: 10px; letter-spacing: .18em; font-weight: 800; }
+    h2 { margin: 8px 0 0; font-size: clamp(26px, 4vw, 38px); letter-spacing: -.04em; }
+    .section-head p { color: var(--muted); font-size: 12px; margin: 0; }
+    .categories { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .category {
+      padding: 20px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.025);
+      transition: .2s; text-align: left; color: var(--text);
+    }
+    .category:hover, .category.active { border-color: rgba(105,227,255,.5); background: rgba(105,227,255,.07); transform: translateY(-3px); }
+    .category .emoji { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 15px; background: var(--panel-2); font-size: 23px; margin-bottom: 15px; }
+    .category strong { display: block; font-size: 14px; }
+    .category small { display: block; color: var(--muted); margin-top: 5px; font-size: 11px; }
+    .toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+    .searchbox { flex: 1; min-width: 220px; position: relative; }
+    .searchbox input { width: 100%; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 13px; padding: 13px 15px 13px 42px; outline: none; }
+    .searchbox input:focus { border-color: var(--blue); }
+    .search-icon { position: absolute; left: 15px; top: 12px; color: var(--muted); }
+    .filter-btn { border: 1px solid var(--line); border-radius: 13px; padding: 12px 15px; color: var(--text); background: var(--panel); }
+    .products { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .product { overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)); transition: transform .2s, border-color .2s; }
+    .product:hover { transform: translateY(-5px); border-color: rgba(105,227,255,.35); }
+    .product-visual { height: 190px; display: grid; place-items: center; position: relative; background: radial-gradient(circle at 50% 45%, rgba(101,126,255,.18), transparent 58%), #11172a; }
+    .product-visual .emoji { font-size: 76px; filter: drop-shadow(0 12px 18px rgba(0,0,0,.35)); }
+    .product-visual .pill { position: absolute; top: 12px; left: 12px; font-size: 9px; padding: 6px 8px; border-radius: 7px; color: var(--blue); background: rgba(105,227,255,.1); border: 1px solid rgba(105,227,255,.18); }
+    .heart { position: absolute; top: 10px; right: 10px; border: 0; background: rgba(8,11,22,.65); color: white; border-radius: 9px; width: 30px; height: 30px; }
+    .product-info { padding: 16px; }
+    .product-type { color: var(--muted); font-size: 10px; }
+    .product h3 { font-size: 14px; margin: 7px 0; }
+    .rating { color: #ffd780; font-size: 11px; }
+    .price-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 15px; }
+    .price { font-size: 18px; font-weight: 850; }
+    .old-price { color: #69728e; font-size: 10px; text-decoration: line-through; margin-left: 5px; }
+    .add-btn { width: 34px; height: 34px; border: 0; border-radius: 11px; color: #08101a; font-size: 20px; font-weight: 800; background: linear-gradient(135deg, var(--blue), #b5c9ff); }
+    .empty { grid-column: 1/-1; color: var(--muted); text-align: center; padding: 35px; border: 1px dashed var(--line); border-radius: 18px; }
+    .promo {
+      display: grid; grid-template-columns: 1.2fr .8fr; align-items: center; gap: 20px; padding: 32px;
+      border: 1px solid rgba(167,139,250,.22); border-radius: 25px;
+      background: radial-gradient(circle at 80% 20%, rgba(167,139,250,.18), transparent 35%), linear-gradient(120deg, #151c36, #101426);
+    }
+    .promo h2 { margin-bottom: 12px; }
+    .promo p { color: var(--muted); font-size: 13px; line-height: 1.8; max-width: 500px; }
+    .promo-art { font-size: 100px; text-align: center; filter: drop-shadow(0 10px 30px rgba(105,227,255,.22)); }
+    footer { margin-top: 60px; padding: 30px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+    .footer-row { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .toast { position: fixed; bottom: 22px; left: 50%; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; padding: 13px 18px; border-radius: 12px; background: #e7faff; color: #07101b; font-size: 13px; font-weight: 800; box-shadow: 0 10px 35px #0005; transition: .25s; z-index: 30; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-art { min-height: 380px; }
+      .products { grid-template-columns: repeat(2, 1fr); }
+      .categories { grid-template-columns: repeat(2, 1fr); }
+      .navlinks { gap: 14px; }
+    }
+    @media (max-width: 620px) {
+      .wrap { width: min(100% - 28px, 1160px); }
+      .nav { min-height: 66px; }
+      .navlinks { display: none; position: absolute; top: 66px; left: 0; right: 0; padding: 18px 22px; background: #0c1020; border-bottom: 1px solid var(--line); flex-direction: column; align-items: flex-start; }
+      .navlinks.open { display: flex; }
+      .menu-btn { display: inline-block; }
+      .hero { padding: 45px 0 30px; }
+      .hero-art { min-height: 330px; }
+      .orb { width: 230px; height: 230px; }
+      .device { width: 145px; height: 245px; }
+      .tag-one { left: 10px; top: 35px; }
+      .tag-two { right: 10px; bottom: 35px; }
+      .section { padding: 36px 0; }
+      .section-head { align-items: flex-start; flex-direction: column; }
+      .promo { grid-template-columns: 1fr; padding: 24px; }
+      .promo-art { font-size: 70px; }
+      .products { gap: 10px; }
+      .product-visual { height: 150px; }
+      .product-visual .emoji { font-size: 58px; }
+      .product-info { padding: 12px; }
+      .price { font-size: 16px; }
+      .stats { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline">NEXTECH NEXT GEN · 新會員首購享限定優惠</div>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#" aria-label="NEXTECH 首頁">
+        <span class="brand-mark">N</span><span>NEXTECH<small>FUTURE IN YOUR HANDS</small></span>
+      </a>
+      <nav class="navlinks" id="navlinks">
+        <a href="#categories">探索分類</a><a href="#products">熱門商品</a><a href="#new">新品上市</a><a href="#footer">關於我們</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" id="cartButton" aria-label="查看購物車">🛒 <span class="cart-count" id="cartCount">0</span></button>
+        <button class="menu-btn" id="menuButton" aria-label="開啟選單">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow"><span class="dot"></span> TECHNOLOGY · REIMAGINED</span>
+          <h1>讓科技，<br><span class="gradient-text">走在未來之前。</span></h1>
+          <p>探索新世代 3C 科技。從旗艦手機、效能筆電到沉浸式音訊，為你的工作、創作與日常生活，找到更聰明的裝備。</p>
+          <div class="hero-buttons">
+            <a class="btn btn-primary" href="#products">探索熱門商品 <span>↗</span></a>
+            <a class="btn btn-secondary" href="#categories">瀏覽所有分類</a>
+          </div>
+          <div class="stats">
+            <div class="stat"><strong>120+</strong><span>精選科技商品</span></div>
+            <div class="stat"><strong>24/7</strong><span>線上購物體驗</span></div>
+            <div class="stat"><strong>安心選</strong><span>品質與售後服務</span></div>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="未來科技手機主視覺">
+          <div class="orb"></div><div class="device"><div class="screen"><div class="camera"></div></div></div>
+          <div class="float-tag tag-one"><strong>NEO PHONE X</strong><span>新世代旗艦體驗</span></div>
+          <div class="float-tag tag-two"><strong>✦ 未來已就位</strong><span>DESIGNED FOR TOMORROW</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="categories">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">DISCOVER YOUR TECH</div><h2>找到你的科技搭檔</h2></div><p>點選分類，快速探索你的下一件裝備。</p></div>
+        <div class="categories">
+          <button class="category active" data-category="全部"><span class="emoji">✦</span><strong>全部商品</strong><small>Explore everything</small></button>
+          <button class="category" data-category="手機"><span class="emoji">📱</span><strong>智慧手機</strong><small>Power in your pocket</small></button>
+          <button class="category" data-category="電腦"><span class="emoji">💻</span><strong>筆電與平板</strong><small>Work without limits</small></button>
+          <button class="category" data-category="配件"><span class="emoji">🎧</span><strong>音訊與配件</strong><small>Every detail matters</small></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="products">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">CURATED FOR YOU</div><h2>本週熱門商品</h2></div><p id="resultCount">精選科技，讓體驗再升級。</p></div>
+        <div class="toolbar">
+          <label class="searchbox"><span class="search-icon">⌕</span><input id="searchInput" type="search" placeholder="搜尋手機、耳機、筆電…" aria-label="搜尋商品"></label>
+          <select class="filter-btn" id="sortSelect" aria-label="商品排序"><option value="featured">推薦排序</option><option value="low">價格由低到高</option><option value="high">價格由高到低</option></select>
+        </div>
+        <div class="products" id="productGrid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="new">
+      <div class="wrap promo">
+        <div><div class="kicker">THE NEXT CHAPTER</div><h2>升級裝備，<br><span class="gradient-text">開啟新可能。</span></h2><p>不論是打造工作效率、沉浸在喜愛的音樂，或記錄生活的每個瞬間，選對科技，讓每一天都更有感。</p><a class="btn btn-primary" href="#products">立即挑選你的裝備 ↗</a></div>
+        <div class="promo-art" aria-hidden="true">⌁📡⌁</div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <div class="wrap footer-row">
+      <div><div class="brand"><span class="brand-mark">N</span><span>NEXTECH<small>FUTURE IN YOUR HANDS</small></span></div><p>讓科技更貼近生活，讓未來從現在開始。</p></div>
+      <div>© 2026 NEXTECH Studio · 網頁設計展示範例<br>商品名稱、價格與購物車皆為示範內容。</div>
+    </div>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const products = [
+      { id: 1, name: "NEO Phone X 旗艦手機", type: "手機", category: "手機", emoji: "📱", price: 28900, old: 31900, rating: "★★★★★", badge: "新品上市" },
+      { id: 2, name: "AeroBook Pro 14", type: "輕薄效能筆電", category: "電腦", emoji: "💻", price: 42900, old: 45900, rating: "★★★★★", badge: "人氣推薦" },
+      { id: 3, name: "Sonic Air 無線耳機", type: "主動降噪耳機", category: "配件", emoji: "🎧", price: 4990, old: 5990, rating: "★★★★☆", badge: "熱銷商品" },
+      { id: 4, name: "Pulse 智慧手錶", type: "健康與運動追蹤", category: "配件", emoji: "⌚", price: 7990, old: 8990, rating: "★★★★★", badge: "精選推薦" },
+      { id: 5, name: "Vision Tab 11 平板", type: "創作娛樂平板", category: "電腦", emoji: "▣", price: 15900, old: 17900, rating: "★★★★☆", badge: "限時優惠" },
+      { id: 6, name: "Nova Mini 藍牙喇叭", type: "便攜式音響", category: "配件", emoji: "🔊", price: 2690, old: 3290, rating: "★★★★★", badge: "輕巧便攜" },
+      { id: 7, name: "PixelCam 4K 運動相機", type: "4K 影像紀錄", category: "配件", emoji: "📷", price: 8990, old: 9990, rating: "★★★★☆", badge: "創作者推薦" },
+      { id: 8, name: "NEO Phone Lite", type: "日常智慧手機", category: "手機", emoji: "📲", price: 12900, old: 14900, rating: "★★★★☆", badge: "高 CP 值" }
+    ];
+    let selectedCategory = "全部";
+    let cart = [];
+    const grid = document.getElementById("productGrid");
+    const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
+    const toast = document.getElementById("toast");
+    let toastTimer;
+
+    const money = n => "NT$ " + n.toLocaleString("zh-TW");
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+    function renderProducts() {
+      const term = searchInput.value.trim().toLowerCase();
+      let filtered = products.filter(p =>
+        (selectedCategory === "全部" || p.category === selectedCategory) &&
+        (p.name.toLowerCase().includes(term) || p.type.toLowerCase().includes(term) || p.category.toLowerCase().includes(term))
+      );
+      if (sortSelect.value === "low") filtered.sort((a,b) => a.price - b.price);
+      if (sortSelect.value === "high") filtered.sort((a,b) => b.price - a.price);
+      document.getElementById("resultCount").textContent = `目前顯示 ${filtered.length} 件商品`;
+      if (!filtered.length) {
+        grid.innerHTML = '<div class="empty">找不到符合條件的商品，試試其他關鍵字或分類。</div>';
+        return;
+      }
+      grid.innerHTML = filtered.map(p => `
+        <article class="product">
+          <div class="product-visual">
+            <span class="pill">${p.badge}</span><button class="heart" aria-label="收藏 ${p.name}" data-heart="${p.id}">♡</button>
+            <span class="emoji" aria-hidden="true">${p.emoji}</span>
+          </div>
+          <div class="product-info">
+            <div class="product-type">${p.type}</div><h3>${p.name}</h3>
+            <div class="rating">${p.rating} <span style="color:#9aa5c5">評價展示</span></div>
+            <div class="price-row"><div><span class="price">${money(p.price)}</span><span class="old-price">${money(p.old)}</span></div>
+            <button class="add-btn" data-add="${p.id}" aria-label="將 ${p.name} 加入購物車">+</button></div>
+          </div>
+        </article>`).join("");
+    }
+    document.querySelectorAll(".category").forEach(button => {
+      button.addEventListener("click", () => {
+        selectedCategory = button.dataset.category;
+        document.querySelectorAll(".category").forEach(b => b.classList.toggle("active", b === button));
+        renderProducts();
+        document.getElementById("products").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+    searchInput.addEventListener("input", renderProducts);
+    sortSelect.addEventListener("change", renderProducts);
+    grid.addEventListener("click", event => {
+      const add = event.target.closest("[data-add]");
+      const heart = event.target.closest("[data-heart]");
+      if (add) {
+        const product = products.find(p => p.id === Number(add.dataset.add));
+        cart.push(product);
+        document.getElementById("cartCount").textContent = cart.length;
+        showToast(`已將「${product.name}」加入購物車`);
+      }
+      if (heart) {
+        heart.textContent = heart.textContent === "♡" ? "♥" : "♡";
+        heart.style.color = heart.textContent === "♥" ? "#ff86b7" : "white";
+        showToast(heart.textContent === "♥" ? "已加入收藏" : "已取消收藏");
+      }
+    });
+    document.getElementById("cartButton").addEventListener("click", () => {
+      if (!cart.length) return showToast("購物車目前是空的，去挑選喜歡的商品吧！");
+      const total = cart.reduce((sum, p) => sum + p.price, 0);
+      const summary = cart.map(p => p.name).join("、");
+      showToast(`購物車 ${cart.length} 件｜合計 ${money(total)}`);
+      document.getElementById("cartButton").title = summary;
+    });
+    document.getElementById("menuButton").addEventListener("click", () => {
+      document.getElementById("navlinks").classList.toggle("open");
+    });
+    document.querySelectorAll(".navlinks a").forEach(link => link.addEventListener("click", () => {
+      document.getElementById("navlinks").classList.remove("open");
+    }));
+    renderProducts();
+  </script>
+</body>
+</html>
